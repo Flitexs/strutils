@@ -1,6 +1,5 @@
 #include "include/strutils.h"
 #include <stddef.h>
-#include <math.h>
 
 int strtoint(const char *str, int bufferSize)  {
     if (str == NULL) {
