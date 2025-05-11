@@ -1,6 +1,10 @@
 #ifndef STRUTILS_H
 #define STRUTILS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Converts a string to an integer.
  *
@@ -15,6 +19,10 @@
  */
 
 int strtoint(const char* str, int bufferSize);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // STRUTILS_H
 
