@@ -16,5 +16,7 @@ TEST_CASE( "strtoint", "[str],[strtoint]" ) {
     */
     int expected = 12345;
     int result = strtoint(input, bufferSize);
-    REQUIRE( result == expected );
+    CHECK( result == expected );
+    CHECK(strtoint("-15", 4) == -15);
+    CHECK(strtoint("+15", 4) == 15);
 }

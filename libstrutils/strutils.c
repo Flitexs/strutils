@@ -7,7 +7,6 @@ int strtoint(const char *str, int bufferSize)  {
     }
 
     int result = 0;
-    int h = 0;
 
     // Convert the string to an integer
     for (int i = 0; i < bufferSize && str[i] != '\0'; ++i) {
@@ -17,13 +16,15 @@ int strtoint(const char *str, int bufferSize)  {
         // '0' is 48 in ASCII, so we subtract 48 to get the integer value
         // Example: '5' - '0' = 5
         char b = str[i];
-        if (b >= '0' && b <= '9') {
-            return 0;
+        if (b < '0' || b > '9') {
+            continue;
         }
         int f = (int)b;
         int a = f - '0';
         result = result * 10 + a;
     }
-    
+    if (str[0] == '-') {
+        result = result * (-1);
+    }
     return result;
 }
