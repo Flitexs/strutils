@@ -61,7 +61,7 @@ bool th_isdigit(char c);
  * @param c The character to check.
  * @return true if c is a whitespace character; false otherwise.
  */
-// bool isspace(char c);
+bool th_isspace(char c);
 
 /**
  * @brief Converts a string to an integer.

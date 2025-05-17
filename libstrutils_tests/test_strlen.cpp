@@ -39,3 +39,12 @@ TEST_CASE ("isdigit", "[str],[isdigit]") {
         CHECK (th_isdigit(number) == true);
     }
 }
+
+TEST_CASE ("isspace", "[str],[isspace]") {
+    char h = ' ';
+    CHECK (th_isspace(h) == true);
+    for (int i = 9; i <= 13; i++) {
+        h = i;
+        CHECK (th_isspace(h) == true);
+    }
+}

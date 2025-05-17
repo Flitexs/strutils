@@ -67,3 +67,7 @@ bool th_isalpha(char c) {
 bool th_isdigit(char c) {
     return (c >= '0' && c <= '9');
 }
+
+bool th_isspace(char c) {
+    return (c == 32 || c == '\t' || c == '\n' || c == '\v' || c == '\r' || c == '\f');
+}
