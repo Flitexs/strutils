@@ -49,7 +49,7 @@ bool th_isalpha(char c);
  * @param c The character to check.
  * @return true if c is a digit; false otherwise.
  */
-// bool isdigit(char c);
+bool th_isdigit(char c);
 
 /**
  * @brief Checks if the provided character is a whitespace character.

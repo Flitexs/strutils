@@ -61,10 +61,9 @@ int th_strlen_unsafe(const char* str) {
 }
 
 bool th_isalpha(char c) {
-    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+
+bool th_isdigit(char c) {
+    return (c >= '0' && c <= '9');
 }
