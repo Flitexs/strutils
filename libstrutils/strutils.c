@@ -28,3 +28,34 @@ int strtoint(const char *str, int bufferSize)  {
     }
     return result;
 }
+
+int th_strlen(const char* str, int bufferSize) {
+    if (str == NULL) {
+        return *str;
+    }
+
+    int i = 0;
+
+    for(; i < bufferSize && str[i] != '\0'; i++);
+
+    return i;
+}
+
+void th_strfree(char* str) {
+    free(str);
+}
+
+char *th_stralloc(int size) {
+    return (char*) malloc(size * sizeof(char));
+}
+
+int th_strlen_unsafe(const char* str) {
+    if (str == NULL) {
+        return *str;
+    }
+
+    int length = 0;
+    
+    for (; length < str[length] != '\0'; length++);
+    return length;
+}

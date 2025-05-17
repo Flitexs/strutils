@@ -21,7 +21,7 @@ TEST_CASE( "strtoint", "[str],[strtoint]" ) {
     CHECK(strtoint("+15", 4) == 15);
 }
 
-TEST_CASE("strtoint edge cases", "[strtoint]") {
+TEST_CASE("strtoint edge cases", "[str],[strtoint]") {
     SECTION("Empty string returns 0") {
         char input[] = "";
         int size = sizeof(input);

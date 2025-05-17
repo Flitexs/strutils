@@ -15,7 +15,7 @@ extern "C" {
  * @param bufferSize The maximum number of characters to examine.
  * @return The length of the string, or a negative value if an error occurs.
  */
-//int strlen(const char* str, int bufferSize);
+int th_strlen(const char* str, int bufferSize);
 
 /**
  * @brief Computes the length of the string without any buffer size limit.
@@ -26,7 +26,7 @@ extern "C" {
  * @param str The input null-terminated string.
  * @return The length of the string.
  */
-// int strlen_unsafe(const char* str);
+int th_strlen_unsafe(const char* str);
 
 /**
  * @brief Checks if the provided character is an alphabetic letter.
@@ -261,7 +261,7 @@ int strtoint(const char* str, int bufferSize);
  *
  * @param str The string to free.
  */
-// void strfree(char* str);
+void th_strfree(char* str);
 
 /**
  * @brief Allocates memory for a string of a specified size.
@@ -272,7 +272,7 @@ int strtoint(const char* str, int bufferSize);
  * @param size The size of the string to allocate.
  * @return A pointer to the allocated string, or NULL if allocation fails.
  */
-// char *stralloc(int size);
+char *th_stralloc(int size);
 
 #ifdef __cplusplus
 }

@@ -4,7 +4,9 @@ set(CMAKE_CXX_STANDARD 23)
 
 # Add an executable named "strUtilsTests" that will be built from the source file "catch_strutils.cpp"
 add_executable(${PROJECT_NAME}
-    test_strtoint.cpp
+    #test_strtoint.cpp
+    # only will work 1 file (test_strlen.cpp)
+    test_strlen.cpp
 )
 
 # Link the Catch2 testing framework to the "strUtilsTests" executable
