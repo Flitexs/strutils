@@ -55,7 +55,16 @@ int th_strlen_unsafe(const char* str) {
     }
 
     int length = 0;
-    
+
     for (; length < str[length] != '\0'; length++);
     return length;
+}
+
+bool th_isalpha(char c) {
+    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }

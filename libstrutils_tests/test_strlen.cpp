@@ -13,3 +13,21 @@ TEST_CASE ( "strlen_unsafe", "[str],[strlen_unsafe]") {
     CHECK (th_strlen_unsafe(someChar) == 5);
     CHECK (th_strlen_unsafe(someChar) == sizeof(someChar) - 1);
 }
+
+TEST_CASE ( "isalpha", "[str],[isalpha]") {
+    char uppercase = 'A';
+    for (int i = 'A'; i < 'Z'; i++) {
+        uppercase += 1;
+        CHECK (th_isalpha(uppercase) == false);
+    }
+    uppercase = 'a';
+    for (int i = 'a'; i < 'z'; i++) {
+        uppercase += 1;
+        CHECK (th_isalpha(uppercase) == false);
+    }
+    uppercase = '0';
+    for (int i = 0; i <= 9; i++) {
+        uppercase += 1;
+        CHECK (th_isalpha(uppercase) == true);
+    }
+}

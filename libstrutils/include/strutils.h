@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
+
 /**
  * @brief Computes the length of the string up to a maximum of bufferSize characters.
  *
@@ -37,7 +39,7 @@ int th_strlen_unsafe(const char* str);
  * @param c The character to check.
  * @return true if c is an alphabetic letter; false otherwise.
  */
-// bool isalpha(char c);
+bool th_isalpha(char c);
 
 /**
  * @brief Checks if the provided character is a digit.
