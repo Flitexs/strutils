@@ -46,7 +46,7 @@ void th_strfree(char* str) {
 }
 
 char *th_stralloc(int size) {
-    return (char*) malloc(size * sizeof(char));
+    return (char*)malloc(size * sizeof(char));
 }
 
 int th_strlen_unsafe(const char* str) {
@@ -70,4 +70,84 @@ bool th_isdigit(char c) {
 
 bool th_isspace(char c) {
     return (c == 32 || c == '\t' || c == '\n' || c == '\v' || c == '\r' || c == '\f');
+}
+
+char *th_strdup(const char* str, int bufferSize) {
+    if (str == NULL || bufferSize <= 0) {
+        return NULL;
+    }
+
+    char* string = (char*)malloc(bufferSize);
+    int i = 0;
+    for (; i < bufferSize && str[i] != '\0'; i++) {
+        string[i] = str[i];
+    }
+    string[i] = '\0';
+    return string;
+}
+
+char *th_strndup(const char* str, int n, int bufferSize) {
+    if (str == NULL || bufferSize <= 0) {
+        return NULL;
+    }
+
+    if (n < 0) {
+        char *string = (char *)malloc(bufferSize);
+        int i = 0;
+        for (; i < bufferSize; i++) {
+            string[i] = str[i];
+        }
+        string[i] = '\0';
+        return string;
+    }
+
+    char* string = (char*)malloc(bufferSize);
+    int i = 0;
+    for (; i < n; i++) {
+        string[i] = str[i];
+    }
+    string[i] = '\0';
+    return string;
+}
+
+char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2) {
+    if (dest == NULL || src == NULL) {
+        return NULL;
+    }
+
+    int j = th_strlen(dest, bufferSize1);
+
+    if (j + th_strlen(src, bufferSize2) + 1 > bufferSize1) {
+        return NULL;
+    }
+
+    int i = 0;
+
+
+    for (; i < src[i] != '\0'; i++) {
+        dest[j + i] = src[i];
+    }
+    dest[j + i] = '\0';
+    return dest;
+}
+
+bool th_islower(char c) {
+    return (c >= 'a' && c <= 'z');
+}
+
+bool th_ishigher(char c) {
+    return (c >= 'A' && c <= 'Z');
+}
+
+char th_tolower(const char c) {
+    if (true == (c >= 'A' && c <= 'Z')) {
+        return c + 32;
+    }
+    else {
+        return c;
+    }
+}
+
+char *th_strtolower(const char* str, int bufferSize) {
+
 }

@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 /**
  * @brief Computes the length of the string up to a maximum of bufferSize characters.
@@ -63,6 +64,10 @@ bool th_isdigit(char c);
  */
 bool th_isspace(char c);
 
+bool th_islower(char c);
+
+bool th_ishigher(char c);
+
 /**
  * @brief Converts a string to an integer.
  *
@@ -85,7 +90,7 @@ int strtoint(const char* str, int bufferSize);
  * @param bufferSize The maximum number of characters to duplicate.
  * @return A pointer to the newly allocated duplicate of the string, or NULL on failure.
  */
-// char *strdup(const char* str, int bufferSize);
+char *th_strdup(const char* str, int bufferSize);
 
 /**
  * @brief Duplicates up to n characters of the input string.
@@ -99,7 +104,7 @@ int strtoint(const char* str, int bufferSize);
  * @param bufferSize The maximum number of characters to process.
  * @return A pointer to the newly allocated duplicate of the substring, or NULL on failure.
  */
-// char *strndup(const char* str, int n, int bufferSize);
+char *th_strndup(const char* str, int n, int bufferSize);
 
 /**
  * @brief Concatenates two strings.
@@ -113,7 +118,7 @@ int strtoint(const char* str, int bufferSize);
  * @param bufferSize2 The size of the source buffer.
  * @return A pointer to the destination string.
  */
-// char *strcat(char* dest, const char* src, int bufferSize1, int bufferSize2);
+char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Concatenates up to n characters of the source string to the destination string.
@@ -130,7 +135,7 @@ int strtoint(const char* str, int bufferSize);
  * @param bufferSize2 The size of the source buffer.
  * @return A pointer to the destination string.
  */
-// char *strncat(char* dest, const char* src, int n, int bufferSize1, int bufferSize2);
+// char *th_strncat(char* dest, const char* src, int n, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Compares two strings.
@@ -145,7 +150,7 @@ int strtoint(const char* str, int bufferSize);
  * @return An integer less than, equal to, or greater than zero if str1 is found, 
  * respectively, to be less than, equal to, or greater than str2.
  */
-// int strcmp(const char* str1, const char* str2, int bufferSize1, int bufferSize2);
+// int th_strcmp(const char* str1, const char* str2, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Compares two strings up to n characters.
@@ -162,7 +167,7 @@ int strtoint(const char* str, int bufferSize);
  * @return An integer less than, equal to, or greater than zero if str1 is found, 
  * respectively, to be less than, equal to, or greater than str2.
  */
-// int strncmp(const char* str1, const char* str2, int n, int bufferSize1, int bufferSize2);
+// int th_strncmp(const char* str1, const char* str2, int n, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Searches for a substring within a string.
@@ -176,7 +181,7 @@ int strtoint(const char* str, int bufferSize);
  * @param bufferSize2 The size of str2's buffer.
  * @return A pointer to the beginning of the found substring within str1, or NULL if not found.
  */
-// char *strstr(const char* str1, const char* str2, int bufferSize1, int bufferSize2);
+// char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Splits a string using a specified delimiter.
@@ -190,7 +195,9 @@ int strtoint(const char* str, int bufferSize);
  * @param bufferSize2 The size of the delimiter's buffer.
  * @return A NULL-terminated array of tokens, or NULL if memory allocation fails.
  */
-// char **strsplit(const char* str, const char* delim, int bufferSize1, int bufferSize2);
+// char **th_strsplit(const char* str, const char* delim, int bufferSize1, int bufferSize2);
+
+char th_tolower(const char c);
 
 /**
  * @brief Converts a string to lowercase.
@@ -202,7 +209,8 @@ int strtoint(const char* str, int bufferSize);
  * @param bufferSize The maximum number of characters to process in the string.
  * @return A pointer to the newly allocated lowercase string, or NULL on failure.
  */
-// char *strtolower(const char* str, int bufferSize);
+char *th_strtolower(const char* str, int bufferSize);
+
 
 /**
  * @brief Converts a string to uppercase.
