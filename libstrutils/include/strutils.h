@@ -64,8 +64,20 @@ bool th_isdigit(char c);
  */
 bool th_isspace(char c);
 
+/**
+ * @brief Checks if the provided character is a lowercase letter.
+ * 
+ * @param c The character to check.
+ * @return true if c is a lowercase letter; false otherwise.
+ */
 bool th_islower(char c);
 
+/**
+ * @brief Checks if the provided character is an uppercase letter.
+ * 
+ * @param c The character to check.
+ * @return true if c is an uppercase letter; false otherwise.
+ */
 bool th_ishigher(char c);
 
 /**
@@ -197,6 +209,16 @@ char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2);
  */
 // char **th_strsplit(const char* str, const char* delim, int bufferSize1, int bufferSize2);
 
+/**
+ * @brief Converts a character to lowercase.
+ * 
+ * This function converts the provided character to its lowercase equivalent.
+ * If the character is not an uppercase letter, it is returned unchanged.
+ * 
+ * @param c The character to convert.
+ * @return The lowercase equivalent of the character, or the original character 
+ * if not applicable.
+ */
 char th_tolower(const char c);
 
 /**
