@@ -76,6 +76,7 @@ char *th_strdup(const char* str, int bufferSize) {
     if (str == NULL || bufferSize <= 0) {
         return NULL;
     }
+    // TODO: allocate not by buffersize but by th_strlen+1
     // TODO: use th_stralloc instead of malloc everywhere in this file
     char* string = (char*)malloc(bufferSize * sizeof(char));
     // TODO: Check if memory allocation was successful everywhere in this file
@@ -105,6 +106,7 @@ char *th_strndup(const char* str, int n, int bufferSize) {
         return string;
     }
 
+    // TODO: allocate not by buffersize but by th_strlen+1 or n+1 (?)
     char* string = (char*)malloc(bufferSize);
     int i = 0;
     for (; i < n; i++) { // TODO: Check if n is greater than bufferSize
