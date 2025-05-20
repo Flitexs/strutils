@@ -61,7 +61,7 @@ int th_strlen_unsafe(const char* str) {
 }
 
 bool th_isalpha(char c) {
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); //TODO: use th_islower and th_ishigher
 }
 
 bool th_isdigit(char c) {
@@ -76,8 +76,13 @@ char *th_strdup(const char* str, int bufferSize) {
     if (str == NULL || bufferSize <= 0) {
         return NULL;
     }
-
-    char* string = (char*)malloc(bufferSize);
+    // TODO: allocate not by buffersize but by th_strlen+1
+    // TODO: use th_stralloc instead of malloc everywhere in this file
+    char* string = (char*)malloc(bufferSize * sizeof(char));
+    // TODO: Check if memory allocation was successful everywhere in this file
+    if (string == NULL) {
+        return NULL;
+    }
     int i = 0;
     for (; i < bufferSize && str[i] != '\0'; i++) {
         string[i] = str[i];
@@ -91,7 +96,7 @@ char *th_strndup(const char* str, int n, int bufferSize) {
         return NULL;
     }
 
-    if (n < 0) {
+    if (n < 0) { //TODO: Call th_strdup instead of this code:
         char *string = (char *)malloc(bufferSize);
         int i = 0;
         for (; i < bufferSize; i++) {
@@ -101,16 +106,17 @@ char *th_strndup(const char* str, int n, int bufferSize) {
         return string;
     }
 
+    // TODO: allocate not by buffersize but by th_strlen+1 or n+1 (?)
     char* string = (char*)malloc(bufferSize);
     int i = 0;
-    for (; i < n; i++) {
+    for (; i < n; i++) { // TODO: Check if n is greater than bufferSize
         string[i] = str[i];
     }
     string[i] = '\0';
     return string;
 }
 
-char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2) {
+char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2) { //TODO: add tests
     if (dest == NULL || src == NULL) {
         return NULL;
     }
@@ -131,15 +137,15 @@ char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2) {
     return dest;
 }
 
-bool th_islower(char c) {
+bool th_islower(char c) { //TODO: add tests
     return (c >= 'a' && c <= 'z');
 }
 
-bool th_ishigher(char c) {
+bool th_ishigher(char c) { //TODO: add tests
     return (c >= 'A' && c <= 'Z');
 }
 
-char th_tolower(const char c) {
+char th_tolower(const char c) { //TODO: add tests
     if (true == (c >= 'A' && c <= 'Z')) {
         return c + 32;
     }
@@ -147,6 +153,8 @@ char th_tolower(const char c) {
         return c;
     }
 }
+
+//TODO: Implement th_tohigher
 
 char *th_strtolower(const char* str, int bufferSize) {
 
