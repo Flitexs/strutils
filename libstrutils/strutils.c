@@ -78,7 +78,7 @@ char *th_strdup(const char* str, int bufferSize) {
     }
     // TODO: allocate not by buffersize but by th_strlen+1
     // TODO: use th_stralloc instead of malloc everywhere in this file
-    char* string = (char*)malloc(bufferSize * sizeof(char));
+    char* string = th_stralloc(bufferSize);
     // TODO: Check if memory allocation was successful everywhere in this file
     if (string == NULL) {
         return NULL;
@@ -96,20 +96,13 @@ char *th_strndup(const char* str, int n, int bufferSize) {
         return NULL;
     }
 
-    if (n < 0) { //TODO: Call th_strdup instead of this code:
-        char *string = (char *)malloc(bufferSize);
-        int i = 0;
-        for (; i < bufferSize; i++) {
-            string[i] = str[i];
-        }
-        string[i] = '\0';
-        return string;
+    if (n < 0 || n > bufferSize) {
+        return th_strdup(str, bufferSize);
     }
 
-    // TODO: allocate not by buffersize but by th_strlen+1 or n+1 (?)
-    char* string = (char*)malloc(bufferSize);
+    char* string = th_stralloc(n + 1);
     int i = 0;
-    for (; i < n; i++) { // TODO: Check if n is greater than bufferSize
+    for (; i < n && str[i] != '\0'; i++) {
         string[i] = str[i];
     }
     string[i] = '\0';
@@ -157,5 +150,39 @@ char th_tolower(const char c) { //TODO: add tests
 //TODO: Implement th_tohigher
 
 char *th_strtolower(const char* str, int bufferSize) {
+    if (str == NULL || bufferSize <= 0) {
+        return NULL;
+    }
 
+    char *str1 = th_stralloc(bufferSize + 1);
+    int i = 0;
+    for (; i < bufferSize && str[i] != '\0'; i++) {
+        str1[i] = th_tolower(str[i]);
+    }
+    str1[i] = '\0';
+    return str1;
+}
+
+char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferSize2) {
+    if (str1 == NULL || bufferSize1 <= 0 || str2 == NULL || bufferSize2 == 0) {
+        return NULL;
+    }
+
+    int i = 0;
+    int j = 0;
+    for (; i < bufferSize1 && str1[i]; i++) {
+        if (str1[i] == str2[i]) {
+            for (j = i; j < bufferSize2 && str2[j] != '\0'; j++) {
+                if (str1[j] == str2[j]) {
+                    continue;
+                }
+                if (j == bufferSize2 - 1) {
+                    return (char *)&str1[i];
+                }
+            }
+            j = 0;
+            continue;
+        }
+    }
+    return NULL;
 }

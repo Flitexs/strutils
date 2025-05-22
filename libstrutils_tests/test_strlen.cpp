@@ -118,7 +118,7 @@ TEST_CASE ("strndup", "[str],[strndup]") {
     }
     // Edge: Duplicate zero characters should return an empty string.
     char testStr[] = "hello";
-    char* dupZero = th_strndup(testStr, 0, sizeof(testStr)); //TODO: Fix crash on strfree because of overrun
+    char* dupZero = th_strndup(testStr, 0, sizeof(testStr));
     CHECK(dupZero[0] == '\0');
 
     // Edge: When requested length exceeds the actual string length,
@@ -140,11 +140,22 @@ TEST_CASE ("strndup", "[str],[strndup]") {
     // Free the allocated memory   
     th_strfree(dupEmb);
     dupEmb = NULL;
-    // TODO: Uncomment this line to fix the crash
-    // th_strfree(dupOver); // TODO: Fix crash here. Checkout the function. There I left a comment.
+    th_strfree(dupOver);
     dupOver = NULL;
     th_strfree(dupZero);
     dupZero = NULL;
     th_strfree(h1);
     h1 = NULL;
+}
+
+TEST_CASE ("strstr", "[str],[strstr]") {
+    char str1 [] = "Aa Ab Ac";
+    char str2 [] = "Ab";
+    int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
+    int bufferSize2 = sizeof(str2) / sizeof(str2[0]);
+    CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == "Ab");
+    for (int i = 0; i < bufferSize2 && str2[i] != '\0'; i++) {
+        CHECK(th_strstr(str1, str2, bufferSize1, bufferSize2) == &str1[i]);
+    }
+    CHECK(th_strstr(str1, str2, bufferSize1, bufferSize2) == str1+15);
 }

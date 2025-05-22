@@ -147,7 +147,7 @@ char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2);
  * @param bufferSize2 The size of the source buffer.
  * @return A pointer to the destination string.
  */
-// char *th_strncat(char* dest, const char* src, int n, int bufferSize1, int bufferSize2);
+char *th_strncat(char* dest, const char* src, int n, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Compares two strings.
@@ -193,7 +193,7 @@ char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2);
  * @param bufferSize2 The size of str2's buffer.
  * @return A pointer to the beginning of the found substring within str1, or NULL if not found.
  */
-// char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferSize2);
+char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Splits a string using a specified delimiter.
