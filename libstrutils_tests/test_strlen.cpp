@@ -149,15 +149,27 @@ TEST_CASE ("strndup", "[str],[strndup]") {
 }
 
 TEST_CASE ("strstr", "[str],[strstr]") {
-    char str1 [] = "Aa Ab Ac";
-    char str2 [] = "Ab";
-    int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
-    int bufferSize2 = sizeof(str2) / sizeof(str2[0]);
-    CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == "Ab");
-    for (int i = 0; i < bufferSize2 && str2[i] != '\0'; i++) {
-        CHECK(th_strstr(str1, str2, bufferSize1, bufferSize2) == &str1[i]);
+    {
+        char str1 [] = "Aa Ab Ac";
+        char str2 [] = "Ab";
+        int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
+        int bufferSize2 = sizeof(str2) / sizeof(str2[0]);
+        CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == &str1[3]);
     }
-    CHECK(th_strstr(str1, str2, bufferSize1, bufferSize2) == str1+15);
+    {
+        char str1 [] = "Aa Ac Abc";
+        char str2 [] = "Abc";
+        int bufferSize1 = sizeof(str1) / sizeof(str1[0]) - 3;
+        int bufferSize2 = sizeof(str2) / sizeof(str2[0]);
+        CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == NULL);
+    }
+    {
+        char str1 [] = "Aa Ac Abd";
+        char str2 [] = "Abc";
+        int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
+        int bufferSize2 = sizeof(str2) / sizeof(str2[0]) - 1;
+        CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == NULL);
+    }
 }
 
 TEST_CASE ("islower", "[str],[islower]") {
