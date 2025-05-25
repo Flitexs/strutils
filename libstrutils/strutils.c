@@ -61,7 +61,7 @@ int th_strlen_unsafe(const char* str) {
 }
 
 bool th_isalpha(char c) {
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); //TODO: use th_islower and th_ishigher
+    return th_islower(c) || th_ishigher(c); //TODO: use th_islower and th_ishigher (Y)
 }
 
 bool th_isdigit(char c) {
@@ -76,10 +76,10 @@ char *th_strdup(const char* str, int bufferSize) {
     if (str == NULL || bufferSize <= 0) {
         return NULL;
     }
-    // TODO: allocate not by buffersize but by th_strlen+1
-    // TODO: use th_stralloc instead of malloc everywhere in this file
-    char* string = th_stralloc(bufferSize);
-    // TODO: Check if memory allocation was successful everywhere in this file
+    // TODO: allocate not by buffersize but by th_strlen+1 (Y)
+    // TODO: use th_stralloc instead of malloc everywhere in this file (Y)
+    char* string = th_stralloc(th_strlen(str, bufferSize) + 1);
+    // TODO: Check if memory allocation was successful everywhere in this file (Y)
     if (string == NULL) {
         return NULL;
     }
@@ -130,11 +130,11 @@ char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2) {
     return dest;
 }
 
-bool th_islower(char c) { //TODO: add tests
+bool th_islower(char c) { //TODO: add tests (Y)
     return (c >= 'a' && c <= 'z');
 }
 
-bool th_ishigher(char c) { //TODO: add tests
+bool th_ishigher(char c) { //TODO: add tests (Y)
     return (c >= 'A' && c <= 'Z');
 }
 
@@ -173,11 +173,14 @@ char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferS
     for (; i < bufferSize1 && str1[i]; i++) {
         if (str1[i] == str2[i]) {
             for (j = i; j < bufferSize2 && str2[j] != '\0'; j++) {
-                if (str1[j] == str2[j]) {
-                    continue;
+                if (str1[j] != str2[j]) {
+                    break;
                 }
                 if (j == bufferSize2 - 1) {
                     return (char *)&str1[i];
+                }
+                if (str1[j] == str2[j]) {
+                    continue;
                 }
             }
             j = 0;
@@ -185,4 +188,28 @@ char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferS
         }
     }
     return NULL;
+}
+
+int th_strcmp(const char* str1, const char* str2, int bufferSize1, int bufferSize2) {
+    int i = 0;
+    for (; i < bufferSize1 && i < bufferSize2 && str1[i] != '\0' && str2[i] != '\0' && str1[i] == str2[i]; i++);
+    if (i == bufferSize1 && i == bufferSize2) {
+        return 0;
+    } 
+    else if (i == bufferSize1 && str1[i] == '\0' && i < bufferSize2 && str2[i] == '\0') {
+        return 0;
+    }
+    if (i < bufferSize1 && str1[i] == '\0' && (i >= bufferSize2 || str2[i] != '\0')) {
+        return -1;
+    }
+    if (i < bufferSize2 && str2[i] == '\0' && (i >= bufferSize1 || str1[i] != '\0')) {
+        return 1;
+    }
+    if (i == bufferSize1 && i < bufferSize2 && str2[i] != '\0') {
+        return -1;
+    }
+    if (i == bufferSize2 && i < bufferSize1 && str1[i] != '\0') {
+        return 1;
+    }
+    return (unsigned char)str1[i] - (unsigned char)str2[i];
 }

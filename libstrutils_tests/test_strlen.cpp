@@ -159,3 +159,31 @@ TEST_CASE ("strstr", "[str],[strstr]") {
     }
     CHECK(th_strstr(str1, str2, bufferSize1, bufferSize2) == str1+15);
 }
+
+TEST_CASE ("islower", "[str],[islower]") {
+    char c = 'a';
+    CHECK (th_islower(c) == true);
+    for (int i = c; i < 122; i++) {
+        c++;
+        CHECK (th_islower(c) == true);
+    }
+}
+
+TEST_CASE ("ishigher", "[str],[ishigher]") {
+    char c = 'A';
+    CHECK (th_ishigher(c) == true);
+    for (int i = c; i < 90; i++) {
+        c++;
+        CHECK (th_ishigher(c) == true);
+    }
+}
+
+TEST_CASE ("strcmp", "[str],[strcmp]") {
+    char str1 [] = "12345";
+    char str2 [] = "12345";
+    int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
+    int bufferSize2 = sizeof(str2) / sizeof(str2[0]);
+    CHECK (th_strcmp(str1, str2, bufferSize1, bufferSize2) == 0);
+    CHECK (th_strcmp(th_strndup(str1, 4, bufferSize1), str2, bufferSize1, bufferSize2) == -1);
+    CHECK (th_strcmp(str1, th_strndup(str2, 4, bufferSize2), bufferSize1, bufferSize2) == 1);
+}

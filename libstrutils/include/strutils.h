@@ -162,7 +162,7 @@ char *th_strncat(char* dest, const char* src, int n, int bufferSize1, int buffer
  * @return An integer less than, equal to, or greater than zero if str1 is found, 
  * respectively, to be less than, equal to, or greater than str2.
  */
-// int th_strcmp(const char* str1, const char* str2, int bufferSize1, int bufferSize2);
+int th_strcmp(const char* str1, const char* str2, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Compares two strings up to n characters.
