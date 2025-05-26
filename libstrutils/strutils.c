@@ -170,10 +170,26 @@ char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferS
 
     int i = 0;
     int j = 0;
-    for (; i < bufferSize1 && str1[i] != '\0'; i++) {
-        for (j = 0; j < bufferSize2 && str2[j] != '\0' && j + i < bufferSize1 && str1[j + i] == str2[j]; j++) {
-            if (j == bufferSize2 - 2) {
-                return (char *)&str1[i];
+    int kae = 0;
+    for (; kae < str2[kae] != '\0'; kae++);
+    kae++;
+
+    if (kae == bufferSize2) {
+        for (; i < bufferSize1 && str1[i] != '\0'; i++) {
+            for (j = 0; j < bufferSize2 && str2[j] != '\0' && j + i < bufferSize1 && str1[j + i] == str2[j]; j++) {
+                if (j == bufferSize2 - 2) {
+                    return (char *)&str1[i];
+                }
+            }
+        }
+    }
+
+    if (kae > bufferSize2) {
+        for (; i < bufferSize1 && str1[i] != '\0'; i++) {
+            for (j = 0; j < bufferSize2 && str2[j] != '\0' && j + i < bufferSize1 && str1[j + i] == str2[j]; j++) {
+                if (j == kae - bufferSize2 + (kae - bufferSize2)) {
+                    return (char *)&str1[i];
+                }
             }
         }
     }

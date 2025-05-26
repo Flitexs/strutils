@@ -170,6 +170,27 @@ TEST_CASE ("strstr", "[str],[strstr]") {
         int bufferSize2 = sizeof(str2) / sizeof(str2[0]) - 1;
         CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == NULL);
     }
+    {
+        char str1 [] = "Aa Ac Abd";
+        char str2 [] = "Abc";
+        int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
+        int bufferSize2 = sizeof(str2) / sizeof(str2[0]) - 2;
+        CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == NULL);
+    }
+    {
+        char str1 [] = "Aa Abc Abd";
+        char str2 [] = "Abc";
+        int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
+        int bufferSize2 = sizeof(str2) / sizeof(str2[0]) - 3;
+        CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == NULL);
+    }
+    {
+        char str1 [] = "Aa Abc Abd";
+        char str2 [] = "Abc";
+        int bufferSize1 = sizeof(str1) / sizeof(str1[0]) - 5;
+        int bufferSize2 = sizeof(str2) / sizeof(str2[0]);
+        CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == &str1[3]);
+    }
 }
 
 TEST_CASE ("islower", "[str],[islower]") {
