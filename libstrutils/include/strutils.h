@@ -179,7 +179,7 @@ int th_strcmp(const char* str1, const char* str2, int bufferSize1, int bufferSiz
  * @return An integer less than, equal to, or greater than zero if str1 is found, 
  * respectively, to be less than, equal to, or greater than str2.
  */
-// int th_strncmp(const char* str1, const char* str2, int n, int bufferSize1, int bufferSize2);
+int th_strncmp(const char* str1, const char* str2, int n, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Searches for a substring within a string.
@@ -207,7 +207,7 @@ char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferS
  * @param bufferSize2 The size of the delimiter's buffer.
  * @return A NULL-terminated array of tokens, or NULL if memory allocation fails.
  */
-// char **th_strsplit(const char* str, const char* delim, int bufferSize1, int bufferSize2);
+char **th_strsplit(const char* str, const char* delim, int bufferSize1, int bufferSize2);
 
 /**
  * @brief Converts a character to lowercase.

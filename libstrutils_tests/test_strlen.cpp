@@ -1,6 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "strutils.h"
+#include <iostream>
 
 TEST_CASE ("strlen", "[str],[strlen]") {
     char someLeters [] = "30492363634";
@@ -172,14 +173,16 @@ TEST_CASE ("strstr", "[str],[strstr]") {
     }
     {
         char str1 [] = "Aa Ac Abd";
-        char str2 [] = "Abc";
+        char str2 [] = "Ab";
+        str2[2] = 'c';
         int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
-        int bufferSize2 = sizeof(str2) / sizeof(str2[0]) - 2;
+        int bufferSize2 = sizeof(str2) / sizeof(str2[0]);
         CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == NULL);
     }
     {
         char str1 [] = "Aa Abc Abd";
-        char str2 [] = "Abc";
+        char str2 [] = "Ab";
+        str2[2] = 'c';
         int bufferSize1 = sizeof(str1) / sizeof(str1[0]);
         int bufferSize2 = sizeof(str2) / sizeof(str2[0]) - 3;
         CHECK (th_strstr(str1, str2, bufferSize1, bufferSize2) == NULL);
@@ -219,4 +222,15 @@ TEST_CASE ("strcmp", "[str],[strcmp]") {
     CHECK (th_strcmp(str1, str2, bufferSize1, bufferSize2) == 0);
     CHECK (th_strcmp(th_strndup(str1, 4, bufferSize1), str2, bufferSize1, bufferSize2) == -1);
     CHECK (th_strcmp(str1, th_strndup(str2, 4, bufferSize2), bufferSize1, bufferSize2) == 1);
+}
+
+TEST_CASE ("strsplit", "[str],[strsplit]") {
+    char str [] = "A bc  def   ghi  jk e";
+    char delim [] = "  "; //3
+    int bufferSize1 = sizeof(str) / sizeof(str[0]);
+    int bufferSize2 = sizeof(delim) / sizeof(delim[0]);
+    char** str1 = th_strsplit(str, delim, bufferSize1, bufferSize2);
+    for (int i = 0; i < 4; i++) {
+        CHECK(str1);
+    }
 }

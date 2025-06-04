@@ -76,18 +76,20 @@ char *th_strdup(const char* str, int bufferSize) {
     if (str == NULL || bufferSize <= 0) {
         return NULL;
     }
-    // TODO: allocate not by buffersize but by th_strlen+1 (Y)
-    // TODO: use th_stralloc instead of malloc everywhere in this file (Y)
+
     char* string = th_stralloc(th_strlen(str, bufferSize) + 1);
-    // TODO: Check if memory allocation was successful everywhere in this file (Y)
+
     if (string == NULL) {
         return NULL;
     }
+
     int i = 0;
+
     for (; i < bufferSize && str[i] != '\0'; i++) {
         string[i] = str[i];
     }
     string[i] = '\0';
+
     return string;
 }
 
@@ -170,26 +172,12 @@ char *th_strstr(const char* str1, const char* str2, int bufferSize1, int bufferS
 
     int i = 0;
     int j = 0;
-    int kae = 0;
-    for (; kae < str2[kae] != '\0'; kae++);
-    kae++;
+    int coefficient = th_strlen(str2, bufferSize2);
 
-    if (kae == bufferSize2) {
-        for (; i < bufferSize1 && str1[i] != '\0'; i++) {
-            for (j = 0; j < bufferSize2 && str2[j] != '\0' && j + i < bufferSize1 && str1[j + i] == str2[j]; j++) {
-                if (j == bufferSize2 - 2) {
-                    return (char *)&str1[i];
-                }
-            }
-        }
-    }
-
-    if (kae > bufferSize2) {
-        for (; i < bufferSize1 && str1[i] != '\0'; i++) {
-            for (j = 0; j < bufferSize2 && str2[j] != '\0' && j + i < bufferSize1 && str1[j + i] == str2[j]; j++) {
-                if (j == kae - bufferSize2 + (kae - bufferSize2)) {
-                    return (char *)&str1[i];
-                }
+    for (; i < bufferSize1 && str1[i] != '\0'; i++) {
+        for (j = 0; j < coefficient && j + i < bufferSize1 && str1[j + i] == str2[j]; j++) {
+            if (j == coefficient - 1) {
+                return (char *)&str1[i];
             }
         }
     }
@@ -218,4 +206,153 @@ int th_strcmp(const char* str1, const char* str2, int bufferSize1, int bufferSiz
         return 1;
     }
     return (unsigned char)str1[i] - (unsigned char)str2[i];
+}
+
+int th_strncmp(const char* str1, const char* str2, int n, int bufferSize1, int bufferSize2) {
+    int i = 0;
+    for (; i < n && bufferSize1 && i < bufferSize2 && str1[i] != '\0' && str2[i] != '\0' && str1[i] == str2[i]; i++);
+    if (i == bufferSize1 && i == bufferSize2) {
+        return 0;
+    } 
+    else if (i == bufferSize1 && str1[i] == '\0' && i < bufferSize2 && str2[i] == '\0') {
+        return 0;
+    }
+    if (i < bufferSize1 && str1[i] == '\0' && (i >= bufferSize2 || str2[i] != '\0')) {
+        return -1;
+    }
+    if (i < bufferSize2 && str2[i] == '\0' && (i >= bufferSize1 || str1[i] != '\0')) {
+        return 1;
+    }
+    if (i == bufferSize1 && i < bufferSize2 && str2[i] != '\0') {
+        return -1;
+    }
+    if (i == bufferSize2 && i < bufferSize1 && str1[i] != '\0') {
+        return 1;
+    }
+    return (unsigned char)str1[i] - (unsigned char)str2[i];
+}
+
+char **th_strsplit(const char* str, const char* delim, int bufferSize1, int bufferSize2) {
+    if (str == NULL || bufferSize1 <= 0 || delim == NULL || bufferSize2 <= 0) {
+        return NULL;
+    }
+    
+    int strlenStr = th_strlen(str, bufferSize1);
+    int strlenDelim = th_strlen(delim, bufferSize2);
+    int delimCount = 0;
+    bool exitAllLoops = false;
+
+    for (int i = 0; i < strlenStr; i++) {
+        if (str[i] == delim[0]) {
+            for (int j = 1; j < strlenDelim; j++) {
+                if (str[i + j] == delim[j] && j == strlenDelim - 1) {
+                    delimCount++;
+                    i += strlenDelim - 1;
+                    break;
+                }
+                else if (str[i + j] != delim[j]) {
+                    break;
+                }
+            }
+        }
+    }
+
+   int* delimStart = (int*) malloc(delimCount * sizeof(int));
+   int* delimEnd = (int*) malloc(delimCount * sizeof(int));
+   int indexDelim = -1;
+
+    for (int i = 0; i < strlenStr; i++) {
+        if (str[i] == delim[0]) {
+            indexDelim++;
+            delimStart[indexDelim] = i;
+            for (int j = 1; j < strlenDelim; j++) {
+                if (str[i + j] == delim[j] && j == strlenDelim - 1) {
+                    delimEnd[indexDelim] = i + j;
+                    i += strlenDelim - 1;
+                    break;
+                }
+                else if (str[i + j] != delim[j]) {
+                    delimStart[indexDelim] = 0;
+                    indexDelim--;
+                    break;
+                }
+            }
+        }
+    }
+    indexDelim = -1;
+
+    int tokenCount = 0;
+
+    for (int i = 0; i < strlenStr; i++) {
+        if (i != delimStart[indexDelim] && i != delimEnd[indexDelim]) {
+            indexDelim++;
+            for (int j = 1; j < strlenStr && delimEnd[indexDelim]; j++) {
+                if (delimStart[indexDelim] == i + j ) {
+                    tokenCount++;
+                    i = delimEnd[indexDelim];
+                    break;
+                }
+                if (i + j == strlenStr - 1) {
+                    indexDelim = indexDelim - delimCount - 1;
+                    tokenCount++;
+                    exitAllLoops = true;
+                    break;
+                }
+            }
+            if (exitAllLoops == true) {
+                exitAllLoops = false;
+                break;
+            }
+        }
+    }
+    indexDelim = -1;
+
+   int* tokenStart = (int*) malloc(tokenCount * sizeof(int));
+   int* tokenEnd = (int*) malloc(tokenCount * sizeof(int));
+   int indexToken = -1;
+
+    for (int i = 0; i < strlenStr; i++) {
+        if (i != delimStart[indexDelim] || i != delimEnd[indexDelim] || i < strlenStr) {
+            indexDelim++;
+            indexToken++;
+            tokenStart[indexToken] = i;
+            for (int j = 1; j < strlenStr || delimStart[indexDelim]; j++) {
+                if (i + j == delimStart[indexDelim] - 1) {
+                    tokenEnd[indexToken] = i + j;
+                    if (indexDelim < delimCount) {
+                        i = delimEnd[indexDelim];
+                    }
+                    else {
+                        i += j;
+                    }
+                    break;
+                }
+                else if (i + j == strlenStr - 1) {
+                    tokenEnd[indexToken] = i + j;
+                    exitAllLoops = true;
+                    break;
+                }
+            }
+            if (exitAllLoops == true) {
+                exitAllLoops = false;
+                break;
+            }
+        }
+    }
+    indexDelim = -1;
+    indexToken = -1;
+    
+    char** res = (char**) malloc((tokenCount + 1) * sizeof(char*));
+
+    if (res == NULL) {
+        return NULL;
+    }
+
+    for (int i = 0; i < tokenCount; i++) { 
+        res[i] = th_strndup(&str[tokenStart[i]], tokenEnd[i] + 1 - tokenStart[i], strlenStr);
+    }
+    
+    res[tokenCount] = NULL;
+    
+    return res;
 }
