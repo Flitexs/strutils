@@ -90,7 +90,9 @@ bool th_ishigher(char c);
  * @param bufferSize The maximum number of characters to consider.
  * @return The integer value computed from the string.
  */
-int strtoint(const char* str, int bufferSize);
+int th_strtoint(const char* str, int bufferSize);
+
+char *th_inttostr (int value);
 
 /**
  * @brief Duplicates the input string.
@@ -244,7 +246,7 @@ char *th_strtolower(const char* str, int bufferSize);
  * @param bufferSize The maximum number of characters to process in the string.
  * @return A pointer to the newly allocated uppercase string, or NULL on failure.
  */
-// char *strtoupper(const char* str, int bufferSize);
+char *th_strtoupper(const char* str, int bufferSize);
 
 /**
  * @brief Prints the string to the standard output.
@@ -255,7 +257,7 @@ char *th_strtolower(const char* str, int bufferSize);
  * @param str The string to print.
  * @param bufferSize The maximum number of characters to print.
  */
-// void printstr(const char* str, int bufferSize);
+void th_printstr(const char* str, int bufferSize);
 
 /**
  * @brief Prints the string to the standard error output.
@@ -266,7 +268,7 @@ char *th_strtolower(const char* str, int bufferSize);
  * @param str The string to print.
  * @param bufferSize The maximum number of characters to print.
  */
-// void printstr_err(const char* str, int bufferSize);
+void th_printstr_err(const char* str, int bufferSize);
 
 /**
  * @brief Prints an integer to the standard output.
@@ -275,7 +277,7 @@ char *th_strtolower(const char* str, int bufferSize);
  * 
  * @param value The integer value to print.
  */
-// void printint(int value);
+void th_printint(int value);
 
 /**
  * @brief Prints an integer to the standard error output.
@@ -284,7 +286,7 @@ char *th_strtolower(const char* str, int bufferSize);
  * 
  * @param value The integer value to print.
  */
-// void printint_err(int value);
+// void th_printint_err(int value);
 
 /**
  * @brief Frees the memory allocated for a string.
@@ -305,6 +307,10 @@ void th_strfree(char* str);
  * @return A pointer to the allocated string, or NULL if allocation fails.
  */
 char *th_stralloc(int size);
+
+int th_bufferSizeForInt (int number);
+
+void th_printf(const char* str, ...);
 
 #ifdef __cplusplus
 }

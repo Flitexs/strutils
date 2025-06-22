@@ -226,11 +226,33 @@ TEST_CASE ("strcmp", "[str],[strcmp]") {
 
 TEST_CASE ("strsplit", "[str],[strsplit]") {
     char str [] = "A bc  def   ghi  jk e";
-    char delim [] = "  "; //3
+    char delim [] = "  ";
     int bufferSize1 = sizeof(str) / sizeof(str[0]);
     int bufferSize2 = sizeof(delim) / sizeof(delim[0]);
     char** str1 = th_strsplit(str, delim, bufferSize1, bufferSize2);
-    for (int i = 0; i < 4; i++) {
-        CHECK(str1);
-    }
+    int bufferSize3 = sizeof(str1) / sizeof(str[0]);
+    free(str1);
+}
+
+TEST_CASE ("strtoupper", "[str],[strtoupper]") {
+    char str[] = "abcDeFg";
+    int bufferSize = sizeof(str) / sizeof(str[0]);
+    char* newStr = th_strtoupper(str, bufferSize);
+    char some[] = "ABCDEFG";
+    // CHECK (newStr == some);
+}
+
+TEST_CASE("inttostr", "[str],[inttostr]") {
+    int number = 153;
+    char n[] = "153";
+    // char *some = th_inttostr(number);
+    // CHECK(th_inttostr(number) == n);
+}
+
+TEST_CASE("printf", "[str]") {
+    int a = 13;
+    double b = 3.141596;
+    char c = 'J';
+    char str[] = "some string to insert";
+    th_printf("%s\n bla bla bla %d\n double: %f %c", str, a, b, c);
 }

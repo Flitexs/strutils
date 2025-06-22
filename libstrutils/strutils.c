@@ -1,7 +1,11 @@
 #include "include/strutils.h"
 #include <stddef.h>
+#include <io.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
 
-int strtoint(const char *str, int bufferSize)  {
+int th_strtoint(const char *str, int bufferSize)  {
     if (str == NULL) {
         return *str;
     }
@@ -27,6 +31,37 @@ int strtoint(const char *str, int bufferSize)  {
         result = result * (-1);
     }
     return result;
+}
+
+char *th_inttostr (int value) {
+    int bufferSize = 0;
+
+    {
+        int numberOfNumbers = 0;
+        int value2 = value;
+        do {
+            value2 /= 10;
+            numberOfNumbers++;
+        } while (value2 != 0);
+        bufferSize = numberOfNumbers + 1;
+    }
+    
+    char* str = (char*) malloc((bufferSize) * sizeof(char));
+    int h = 1;
+
+    for (int i = 0; i < bufferSize - 1; i++) {
+        int f = bufferSize - 1 - i;
+        for (int j = 1; j < f; j++) {
+            h *= 10;
+        }
+        int l = value / h;
+        value = value - (l * h);
+        str[i] = (char)l + 48;
+        h = 1;
+    }
+    str[bufferSize - 1] = '\0';
+
+    return str;
 }
 
 int th_strlen(const char* str, int bufferSize) {
@@ -56,12 +91,13 @@ int th_strlen_unsafe(const char* str) {
 
     int length = 0;
 
-    for (; length < str[length] != '\0'; length++);
+    for (; str[length] != '\0'; length++);
+
     return length;
 }
 
 bool th_isalpha(char c) {
-    return th_islower(c) || th_ishigher(c); //TODO: use th_islower and th_ishigher (Y)
+    return th_islower(c) || th_ishigher(c);
 }
 
 bool th_isdigit(char c) {
@@ -111,7 +147,7 @@ char *th_strndup(const char* str, int n, int bufferSize) {
     return string;
 }
 
-char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2) { //TODO: add tests
+char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2) {
     if (dest == NULL || src == NULL) {
         return NULL;
     }
@@ -132,15 +168,15 @@ char *th_strcat(char* dest, const char* src, int bufferSize1, int bufferSize2) {
     return dest;
 }
 
-bool th_islower(char c) { //TODO: add tests (Y)
+bool th_islower(char c) {
     return (c >= 'a' && c <= 'z');
 }
 
-bool th_ishigher(char c) { //TODO: add tests (Y)
+bool th_ishigher(char c) {
     return (c >= 'A' && c <= 'Z');
 }
 
-char th_tolower(const char c) { //TODO: add tests
+char th_tolower(const char c) {
     if (true == (c >= 'A' && c <= 'Z')) {
         return c + 32;
     }
@@ -148,8 +184,6 @@ char th_tolower(const char c) { //TODO: add tests
         return c;
     }
 }
-
-//TODO: Implement th_tohigher
 
 char *th_strtolower(const char* str, int bufferSize) {
     if (str == NULL || bufferSize <= 0) {
@@ -262,7 +296,7 @@ char **th_strsplit(const char* str, const char* delim, int bufferSize1, int buff
    int indexDelim = -1;
 
     for (int i = 0; i < strlenStr; i++) {
-        if (str[i] == delim[0]) {
+        if (str[i] == delim[0] && indexDelim < delimCount - 1) {
             indexDelim++;
             delimStart[indexDelim] = i;
             for (int j = 1; j < strlenDelim; j++) {
@@ -284,26 +318,28 @@ char **th_strsplit(const char* str, const char* delim, int bufferSize1, int buff
     int tokenCount = 0;
 
     for (int i = 0; i < strlenStr; i++) {
-        if (i != delimStart[indexDelim] && i != delimEnd[indexDelim]) {
-            indexDelim++;
-            for (int j = 1; j < strlenStr && delimEnd[indexDelim]; j++) {
-                if (delimStart[indexDelim] == i + j ) {
-                    tokenCount++;
-                    i = delimEnd[indexDelim];
-                    break;
+        if (indexDelim < delimCount - 1) {
+            if (i != delimStart[indexDelim] && i != delimEnd[indexDelim]) {
+                indexDelim++;
+                if (indexDelim <= delimCount - 1) {
+                    for (int j = 1; j < strlenStr && delimEnd[indexDelim]; j++) {
+                        if (delimStart[indexDelim] == i + j) {
+                            tokenCount++;
+                            i = delimEnd[indexDelim];
+                            break;
+                        }
+                        if (i + j == strlenStr - 1) {
+                            tokenCount++;
+                            break;
+                        }
+                    }
                 }
-                if (i + j == strlenStr - 1) {
-                    indexDelim = indexDelim - delimCount - 1;
-                    tokenCount++;
-                    exitAllLoops = true;
-                    break;
-                }
-            }
-            if (exitAllLoops == true) {
-                exitAllLoops = false;
-                break;
             }
         }
+    if (i == strlenStr - 1) {
+        tokenCount++;
+        break;
+    }
     }
     indexDelim = -1;
 
@@ -313,7 +349,9 @@ char **th_strsplit(const char* str, const char* delim, int bufferSize1, int buff
 
     for (int i = 0; i < strlenStr; i++) {
         if (i != delimStart[indexDelim] || i != delimEnd[indexDelim] || i < strlenStr) {
-            indexDelim++;
+            if (indexDelim < delimCount - 1) {
+                indexDelim++;
+            }
             indexToken++;
             tokenStart[indexToken] = i;
             for (int j = 1; j < strlenStr || delimStart[indexDelim]; j++) {
@@ -354,5 +392,133 @@ char **th_strsplit(const char* str, const char* delim, int bufferSize1, int buff
     
     res[tokenCount] = NULL;
     
+    free(delimStart);
+    free(delimEnd);
+    free(tokenStart);
+    free(tokenEnd);
+
     return res;
+}
+
+char *th_strtoupper(const char* str, int bufferSize) {
+    if (str == NULL || bufferSize == 0) {
+        return NULL;
+    }
+
+    char* uppercaseStr = (char*) malloc(bufferSize * sizeof(char));
+
+    for (int i = 0; i < bufferSize && str[i] != '\0'; i++) {
+        if (th_ishigher(str[i]) == true) {
+           uppercaseStr[i] = str[i]; 
+        }
+        else {
+            uppercaseStr[i] = str[i] - 32;
+        }
+    }
+    uppercaseStr[bufferSize - 1] = '\0';
+    
+    return uppercaseStr;
+}
+
+void th_printstr(const char* str, int bufferSize) {
+    _write(1, str, th_strlen(str, bufferSize) * sizeof(char));
+    _write(1, "\n", 1 * sizeof(char));
+}
+
+void th_printstr_err(const char* str, int bufferSize) {
+    _write(2, str, th_strlen(str, bufferSize) * sizeof(char));
+    _write(2, "\n", 1 * sizeof(char));
+}
+
+void th_printint(int value) {
+    char* str = th_inttostr(value);
+    
+    _write(1, str, th_strlen_unsafe(str) * sizeof(char));
+}
+
+int th_bufferSizeForInt(int number) {
+    int bufferSize = 0;
+
+    {
+        int numberOfNumbers = 0;
+        int value2 = number;
+        do {
+            value2 /= 10;
+            numberOfNumbers++;
+        } while (value2 != 0);
+        bufferSize = numberOfNumbers + 1;
+    }
+
+    return bufferSize;
+}
+
+void th_printf(const char* str, ...) {
+    if (str == NULL) {
+        return;
+    }
+
+    va_list list;
+    int bufferSize = th_strlen_unsafe(str);
+
+    int countOfFormatSpecifiers = 0;
+
+    for (int i = 0; i < bufferSize; i++) {
+        if (str[i] == '%') {
+            countOfFormatSpecifiers++;
+            i++;
+        }
+    }
+
+    char** masForFormatSpecifiers = (char**) malloc((countOfFormatSpecifiers + 1) * sizeof(char*));
+    int indexForMas = -1;
+    masForFormatSpecifiers[countOfFormatSpecifiers] = NULL;
+
+    va_start(list, str);
+
+    for(int i = 0; i < bufferSize; i++) {
+        if(str[i] == '%' && indexForMas < countOfFormatSpecifiers) {
+            i++;
+            indexForMas++;
+            if(str[i] == 'd') {
+                int value = va_arg(list, int);
+                masForFormatSpecifiers[indexForMas] = th_inttostr(value);
+            }
+            else if (str[i] == 's') {
+                char* newStr = va_arg(list, char*);
+                masForFormatSpecifiers[indexForMas] = th_strdup(newStr, th_strlen_unsafe(newStr));
+            }
+            else if(str[i] == 'f') {
+                masForFormatSpecifiers[indexForMas] = (char*) malloc((32) * sizeof(char));
+                _gcvt_s(masForFormatSpecifiers[indexForMas], 32, va_arg(list, double), 3);
+            }
+            else if(str[i] == 'c') {
+                char* strForChar = (char*) malloc(2 * sizeof(char));
+                strForChar[0] = va_arg(list, char);
+                strForChar[1] = '\0';
+                masForFormatSpecifiers[indexForMas] = strForChar;
+            }
+        }
+    }
+    va_end(list);
+    indexForMas = -1;
+
+    for(int i = 0; i < bufferSize; i++) {
+        if (str[i] == '%') {
+            i++;
+            indexForMas++;
+            if (indexForMas < countOfFormatSpecifiers) {
+                _write(1, masForFormatSpecifiers[indexForMas], th_strlen_unsafe(masForFormatSpecifiers[indexForMas]));
+            }
+        }
+        else {
+            _write(1, &str[i], 1);
+        }
+    }
+
+    for(int i = 0; i < countOfFormatSpecifiers; i++) {
+        free(masForFormatSpecifiers[i]);
+    }
+
+    free(masForFormatSpecifiers);
+    return;
 }
